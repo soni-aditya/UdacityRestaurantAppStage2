@@ -1,6 +1,22 @@
 let restaurants, neighborhoods, cuisines;
 var newMap;
 var markers = [];
+/*
+Adding a service worker if not present
+ */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./service-worker.js", { scope: "/" })
+    .then(function(registration) {
+      // console.log("Service Worker Registeration",registration);
+      console.log("Service Worker Registeration");
+    })
+    .catch(function(err) {
+      console.log("Service Worker Registion Error Code :", err);
+    });
+} else {
+  console.log("Service Workers not supported");
+}
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -30,7 +46,7 @@ fetchNeighborhoods = () => {
  */
 fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   const select = document.getElementById("neighborhoods-select");
-  select.tabIndex = 2;
+  // select.tabIndex = 2;
   select.label = "neighborhoods-select";
 
   neighborhoods.forEach(neighborhood => {
@@ -61,7 +77,7 @@ fetchCuisines = () => {
  */
 fillCuisinesHTML = (cuisines = self.cuisines) => {
   const select = document.getElementById("cuisines-select");
-  select.tabIndex = 3;
+  // select.tabIndex = 3;
   select.label = "cuisines-select";
 
   cuisines.forEach(cuisine => {
@@ -183,7 +199,7 @@ createRestaurantHTML = (restaurant, tabIndexCount) => {
   const more = document.createElement("a");
   more.innerHTML = "View Details";
   more.href = DBHelper.urlForRestaurant(restaurant);
-  more.tabIndex = tabIndexCount;
+  // more.tabIndex = tabIndexCount;
   li.append(more);
 
   return li;
