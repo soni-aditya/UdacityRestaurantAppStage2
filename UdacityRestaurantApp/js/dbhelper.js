@@ -1,3 +1,4 @@
+let fetchStatus = 0;
 class IDbOperationsHelper {
   static checkForIDbSupport() {
     if (!("indexedDB" in window)) {
@@ -52,16 +53,20 @@ class IDbOperationsHelper {
         responseJson.forEach(restaurant => {
           restaurant = IDbOperationsHelper.addMissingData(restaurant);
         });
-        responseJson.forEach(restaurantData => {
-          //Here we got json data for every single restaurant
-          //Now we add it to IDb
-          IDbOperationsHelper.addToDb(
-            dbPromise,
-            objectStoreName,
-            permision,
-            restaurantData
-          );
-        });
+        if (fetchStatus != 1) {
+          fetchStatus = 1;
+          responseJson.forEach(restaurantData => {
+            //Here we got json data for every single restaurant
+            //Now we add it to IDb
+            IDbOperationsHelper.addToDb(
+              dbPromise,
+              objectStoreName,
+              permision,
+              restaurantData
+            );
+          });
+        }
+        console.log(responseJson);
         callback(null, responseJson);
       });
   }
